@@ -11,6 +11,8 @@ namespace common\models\extend;
 use common\models\forms\ValueFileForm;
 use common\models\forms\ValueIntForm;
 use common\models\forms\ValuePriceForm;
+use common\widgets\Basket\BasketButton;
+use common\widgets\Basket\BasketManage;
 use common\widgets\Carousel\Carousel;
 use common\widgets\Comment\Comment;
 use common\widgets\Rating\Rating;
@@ -19,13 +21,11 @@ use Yii;
 use common\models\Constants;
 use common\models\Document;
 use common\models\forms\DocumentForm;
-use common\models\forms\LikeForm;
 use common\models\forms\TemplateForm;
 use common\models\forms\UserForm;
 use common\models\forms\ValueNumericForm;
 use common\models\forms\ValueStringForm;
 use common\models\forms\ValueTextForm;
-use common\models\forms\VisitForm;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -41,19 +41,20 @@ use yii\helpers\Url;
  * @property array $currencyList
  * @property array $allFolders
  * @property array $accessList
- * @property int $viewedDocument
- * @property int $likedDocument
+  * @property int $likedDocument
  * @property string $dataItem
  * @property array $discountsAvaible
+ * @property array $measuresList
  *
  * @property DocumentForm $parent
+ * @property DocumentForm[] $documentItems
+ * @property DocumentForm $documentItem
  * @property DocumentForm $child
  * @property DocumentForm[] $childs
  * @property DocumentForm[] $documents
  * @property TemplateForm $template
  * @property UserForm $createdBy
  * @property UserForm $updatedBy
- * @property LikeForm[] $likes
  * @property ValueFileForm[] $valueFiles
  * @property ValueIntForm[] $valueInts
  * @property ValueNumericForm[] $valueNumerics
@@ -61,11 +62,34 @@ use yii\helpers\Url;
  * @property ValueTextForm[] $valueTexts
  * @property ValuePriceForm[] $valuePrices
  * @property ValuePriceForm[] $discounts
- * @property VisitForm[] $visits
  *
 */
 class DocumentExtend extends Document
 {
+    /**
+     * Возвращает доступные меры измерения
+     * @return array
+     */
+    public function getMeasuresList()
+    {
+        return [
+            Constants::ITEM_MEASURE_THING =>  Yii::t('app', 'шт'),
+            Constants::ITEM_MEASURE_MM =>  Yii::t('app', 'мм'),
+            Constants::ITEM_MEASURE_CM =>  Yii::t('app', 'см'),
+            Constants::ITEM_MEASURE_M =>  Yii::t('app', 'м'),
+            Constants::ITEM_MEASURE_MM2 =>  Yii::t('app', 'мм') . '²',
+            Constants::ITEM_MEASURE_CM2 =>  Yii::t('app', 'см') . '²',
+            Constants::ITEM_MEASURE_M2 =>  Yii::t('app', 'м') . '²',
+            Constants::ITEM_MEASURE_MG =>  Yii::t('app', 'мг'),
+            Constants::ITEM_MEASURE_G =>  Yii::t('app', 'г'),
+            Constants::ITEM_MEASURE_KG =>  Yii::t('app', 'кг'),
+            Constants::ITEM_MEASURE_T =>  Yii::t('app', 'т'),
+            Constants::ITEM_MEASURE_ML =>  Yii::t('app', 'мл'),
+            Constants::ITEM_MEASURE_L =>  Yii::t('app', 'л'),
+            Constants::ITEM_MEASURE_M3 =>  Yii::t('app', 'м') . '³',
+        ];
+    }
+
     /**
      * Возвращает доступные акции и скидки
      * @return array
@@ -143,6 +167,27 @@ class DocumentExtend extends Document
         return Yii::t('app', 'Данных не найдено.');
     }
 
+    /**
+     * Возвращает сформированный шаблон элемента в корзине
+     * @return int
+     */
+    public function getDataItemListBasket($url = null)
+    {
+        /* @var $fieldsManage \common\widgets\TemplateOfElement\components\FieldsManage */
+        $fieldsManage = Yii::$app->fieldsManage;
+        $view = $this->template->templateViewItemBasket->view;
+        $templateData = $fieldsManage->getData($this->id, $this->template_id);
+        if ($templateData) {
+            if ($templateData) {
+                $view = $this->genereteView($templateData, $view, $type = Constants::TYPE_ITEM_LIST);
+                $view = $this->generateIncludesField('{!item-view!}', $url, $view);
+                return $view;
+            }
+        }
+
+        return Yii::t('app', 'Данных не найдено.');
+    }
+
     /*
      * @return string
      * */
@@ -194,7 +239,6 @@ class DocumentExtend extends Document
                         $view = str_replace('{$_' . $field['title'] . '_$}', Yii::t('app', ''), $view);
                     }
                 }
-
                 // цена без скидки
                 if (strpos($view, '{$=' . $field['title'] . '=$}') !== false) {
                     if (isset($field['value']['price']) && $field['value']['price'] != $field['value']['discount_price']) {
@@ -217,6 +261,84 @@ class DocumentExtend extends Document
                         $view = str_replace('{$!' . $field['title'] . '!$}', $field['value']['date_end'], $view);
                     } else {
                         $view = str_replace('{$!' . $field['title'] . '!$}', Yii::t('app', ''), $view);
+                    }
+                }
+                // ассортимент
+                if (strpos($view, '{$~' . $field['title'] . '~$}') !== false) {
+                    if (isset($field['value']['item'])) {
+                        $view = str_replace('{$~' . $field['title'] . '~$}', $field['value']['item'], $view);
+                    } else {
+                        $view = str_replace('{$~' . $field['title'] . '~$}', Yii::t('app', ''), $view);
+                    }
+                }
+                // мера измерения
+                if (strpos($view, '{$^' . $field['title'] . '^$}') !== false) {
+                    if (isset($field['value']['item_measure'])) {
+                        $view = str_replace('{$^' . $field['title'] . '^$}', $this->getMeasuresList()[$field['value']['item_measure']], $view);
+                    } else {
+                        $view = str_replace('{$^' . $field['title'] . '^$}', Yii::t('app', ''), $view);
+                    }
+                }
+                // количество на складе
+                if (strpos($view, '{$?' . $field['title'] . '?$}') !== false) {
+                    if (isset($field['value']['item_store'])) {
+                        $view = str_replace('{$?' . $field['title'] . '?$}', $field['value']['item_store'], $view);
+                    } else {
+                        $view = str_replace('{$?' . $field['title'] . '?$}', Yii::t('app', ''), $view);
+                    }
+                }
+                // Кнопка добавить в корзину
+                if (strpos($view, '{!+basket+!}') !== false) {
+                    $basketButton = BasketButton::widget([
+                        'document_id' => $this->id,
+                    ]);
+                    $view = str_replace('{!+basket+!}', '<div class="basket">' . $basketButton . '</div>', $view);
+                }
+                // Количество выбранного товара
+                if (strpos($view, '{$+' . $field['title'] . '+$}') !== false ||
+                    strpos($view, '{$*' . $field['title'] . '*$}') !== false ||
+                    strpos($view, '{!-basket-!}') !== false) {
+                    if (Yii::$app->user->isGuest) {
+                        $dataBasket = (new \yii\db\Query())
+                            ->select(['value_numeric.value AS count_items', 'document.id'])
+                            ->from('document')
+                            ->innerJoin('value_numeric', 'value_numeric.document_id = document.id')
+                            ->innerJoin('template', 'template.id = document.template_id')
+                            ->where([
+                                'document.item_id' => $field['value']['document_id'],
+                                'value_numeric.type' => Constants::FIELD_TYPE_NUM,
+                                'template.mark' => 'basket',
+                                'ip' => Yii::$app->request->userIP,
+                                'user_agent' => Yii::$app->request->userAgent,
+                            ])
+                            ->one();
+                    } else {
+                        $dataBasket = (new \yii\db\Query())
+                            ->select(['value_numeric.value AS count_items', 'document.id'])
+                            ->from('document')
+                            ->innerJoin('value_numeric', 'value_numeric.document_id = document.id')
+                            ->innerJoin('template', 'template.id = document.template_id')
+                            ->where([
+                                'document.item_id' => $field['value']['document_id'],
+                                'value_numeric.type' => Constants::FIELD_TYPE_NUM,
+                                'template.mark' => 'basket',
+                                'created_by' => Yii::$app->user->id
+                            ])
+                            ->one();
+                    }
+
+
+                    $view = str_replace('{$+' . $field['title'] . '+$}', $dataBasket['count_items'], $view);
+
+                    $fullPrice = $dataBasket['count_items'] * $field['value']['discount_price'];
+                    $view = str_replace('{$*' . $field['title'] . '*$}', $fullPrice, $view);
+
+                    if (strpos($view, '{!-basket-!}') !== false) {
+                        $basketManage = BasketManage::widget([
+                            'product_id' => $this->id,
+                            'document_id' => $dataBasket['id'],
+                        ]);
+                        $view = str_replace('{!-basket-!}', '<div class="basket">' . $basketManage . '</div>', $view);
                     }
                 }
             } elseif ($field['type'] == Constants::FIELD_TYPE_INT_RANGE || $field['type'] == Constants::FIELD_TYPE_FLOAT_RANGE || $field['type'] == Constants::FIELD_TYPE_DATE_RANGE) {
@@ -421,8 +543,7 @@ class DocumentExtend extends Document
         if (strpos($view, '{!comments!}') !== false) {
             if ($this->template->add_comments && $type == Constants::TYPE_ITEM) {
                 $comments = Comment::widget([
-                    'document_id' => $this->id,
-                    'access_answers' => true,   // разрешены ответы на комментарии
+                    'item_id' => $this->id,
                 ]);
                 $view = str_replace('{!comments!}', '<div id="comment-widget">' . $comments . '</div>', $view);
             } else {
@@ -519,21 +640,6 @@ class DocumentExtend extends Document
         return (new \yii\db\Query())
             ->select(['*'])
             ->from('like')
-            ->where([
-                'document_id' => $this->id,
-            ])
-            ->count();
-    }
-
-    /**
-     * Возвращает количество просмотров документа
-     * @return int
-     */
-    public function getViewedDocument()
-    {
-        return (new \yii\db\Query())
-            ->select(['*'])
-            ->from('visit')
             ->where([
                 'document_id' => $this->id,
             ])
@@ -753,6 +859,22 @@ class DocumentExtend extends Document
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getDocumentItem()
+    {
+        return $this->hasOne(DocumentForm::class, ['id' => 'item_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocumentItems()
+    {
+        return $this->hasMany(DocumentForm::class, ['id' => 'item_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getChild()
     {
         return $this->hasOne(DocumentForm::class, ['parent_id' => 'id'])->where(['is_folder' => null]);
@@ -796,14 +918,6 @@ class DocumentExtend extends Document
     public function getUpdatedBy()
     {
         return $this->hasOne(UserForm::class, ['id' => 'updated_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLikes()
-    {
-        return $this->hasMany(LikeForm::class, ['document_id' => 'id']);
     }
 
     /**
@@ -860,13 +974,5 @@ class DocumentExtend extends Document
     public function getDiscounts()
     {
         return $this->hasMany(ValuePriceForm::class, ['discount_id' => 'id']);        
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVisits()
-    {
-        return $this->hasMany(VisitForm::class, ['document_id' => 'id']);
     }
 }

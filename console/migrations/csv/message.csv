@@ -199,10 +199,6 @@ id;language;translation;hash
 239;en;"View Template";de7d8671157afcf8591ab4c152bd8e66
 241;en;"Add field";fd7c127ea5cb6d40f9f4d8be07487775
 242;en;"Delete template";1566e2689101a9f516c920098a3b3272
-243;en;"View basket item";cdf650880bfd088bb180055d975de753
-244;en;"No rights to view.";cdf650880bfd088bb180055d975de753
-245;en;"Cart manager";88375709a4e72d4b584c9b7e8030b665
-246;en;"Export basket to CSV";231e1dab1632c90ceffcee4b169a5e1c
 247;en;"Update field";3bb433c1943a1ca98ae8e3a2cb772a33
 248;en;"Delete field";752f01c2737a098b2bcef4ff9e973fd2
 249;en;Value;7f49a7ed54b6c97415b9a76c814b2365
@@ -253,26 +249,17 @@ id;language;translation;hash
 294;en;"Regional Management";854bfe8a1d9b363544e09a57cbebddfd
 295;en;"Exporting Regions to CSV";7133adb16b772f184685e7d96181b53b
 296;en;Regions;f03229fb0ebeefc7d9914d0558b22a66
-297;en;Statistics;dec6ca4a45b419390c0aa23545b6fab4
-298;en;"Visitor statistics";d233ff93ca69dbbbf385aa5103f79724
-299;en;"Export visitor statistics to CSV";d233ff93ca69dbbbf385aa5103f79724
-300;en;"User rating";a1c1bedab6ba5c9c03c011c9cda05797
-301;en;"Export user ratings to CSV";932df96ce61781a5dd61daa631e373cd
 302;en;"Roles and rights";e523a8b09a7d6ac127d0f66eae0d3a90
 303;en;Geo;e523a8b09a7d6ac127d0f66eae0d3a90
-304;en;Settings;419e9c40b86df22bb3d94dc111b39343
 305;en;"Export entire database to CSV";d99da46d6d6d7ef1b2fdddf017ab93ab
 306;en;"File manager";58cdc675139c5bd0c53ee1f02064c6d5
 307;en;"Folders and items";157f136c0b6eff16f463286f4b2d2a87
 308;en;Quantity;a02e1e8704c6248e7094226cd27133b1
-309;en;"Payment State";61fa3ce1022731bdcf7bd59379701430
 310;en;"To the cart";244b4d6b2d2dedbc27472601f50474d6
 311;en;"Admin panel";48b7aa8290dbee9baa41d45b54a42e2c
 313;en;"You do not have access to this page.";0dffe62ad75196f29c0c7661166971a4
 314;en;"Route to controller action.";858e94a2b3b49b2baedb1d8cbc810fbe
 343;en;"Table ‘user’ users. Displays all users of the site.";8c78e361b921ba5af170e7a01579f8ce
-344;en;"User is not registered.";3838cd7903d95247ace2638eaf9630f6
-345;en;"Table ‘basket’ basket. Shows added to the basket of goods, their number, and users who have ordered them.";9d1da8bd0164345acb0e66365fd258a2
 346;en;"Table ‘document’ documents. CMS folders. Displays the basic structure of the site. Right-clicking on the selected folder - to create, edit, view, delete this folder. Left-clicking on the selected folder - to create, edit, view, delete elements in this folder.";391334ab05a391bce3738e317c4e26d9
 347;en;"Table ‘document’ documents. Elements of a specific folder. These can be publications, products, letter templates, or your own elements used on the site. To create, edit, view, delete items, select a folder.";a7f668cc2f1a35d28a4d0bc65e94f919
 348;en;"Table ‘template’ templates. contains templates for items. Templates are assigned to folders and applied to the elements of these folders.";e496ce2abdfedb5cf67a021d3c062bdb
@@ -283,8 +270,6 @@ id;language;translation;hash
 353;en;"Country ‘geo_country’ table. Contains a list of countries and information about them.";1a9a8bc48f99d7abd25082d32e70edb4
 354;en;"Table ‘city geo_city’. Contains a list of cities and information about them.";20e2d7190ab17d7aa21522ee9f20e041
 355;en;"Table ‘geo_region’ regions. Contains a list of regions and information about them.";12bbbe5b2273fb2e2fc175dfd2c532b2
-356;en;"Table ‘visit’ statistics of visits.";578c1f76ed6a623f0a63d0abcb5fcdf3
-357;en;"Table ‘like’ statistics of ratings.";bcc88fe88d4494a81d4b912f1add680d
 358;en;"Further folder attachment is not yet provided.";86e9ac62aeba9635a69a7ada398b2009
 359;en;"Login using social network";66f07d66bce5516a2eb1ce7ddb7d2462
 360;en;"Check your email and follow the instructions.";d3df7db8ed72140d7ef8b5dd6bcd8599
@@ -303,8 +288,6 @@ id;language;translation;hash
 386;en;"Fill out the profile";1edfa68a67732ab11eca62e911899d9f
 388;en;"User Profile";c17e99dea24bc7cdfafd0050bf876da8
 389;en;"Select a profile";6c678cad9426e00201f929ba107fd0d7
-390;en;"User Profile 1";524ac245989ce61d9e9f6151ce39369e
-393;en;"A template for the user\\\\\\\\\\\\\\\\\\\`s profile 1";6efdf4f51aa67eef14bca84ce652c64d
 401;en;"User is not found.";5bab565fbc756c9bb6db739b2ee48045
 402;en;"You must confirm your email.";57aa824a7264ef24f811e3e6a64f9a8e
 403;en;"User registration";e618511dd9200a0dbf580e995e4506bb
@@ -319,12 +302,8 @@ id;language;translation;hash
 416;en;"No access";a2141479bc5667f65a3b587c88b54e8b
 417;en;Like;7f03e5b57cb52afcd0c67f3a02c9dfea
 418;en;"Do not like";28080f460db7f85766ddfafc9a4efe5e
-419;en;"Number of stars";de3eec213076253239ab19132fed95fb
-420;en;Comment;ea2b040dbbffbbc71818a415d32fbdf6
 421;en;"Item evaluation allowed";3d1bfabce33f796c7333597c71086c3b
 422;en;"Allow comments to an item";30d0a8ba5d8c2ddf7c5464d914a3120f
-423;en;"Reply to comment";b14bb0f3c780ecaba9bc0d906b73b396
-424;en;Checked;3a117c25034f8a8bf6f9786907ebe62f
 425;en;Reply;706b5864ef3d02ad1c065dea86e694a6
 426;en;Update;2cdf05f4dc927309ded93af82d3d73cc
 427;en;Delete;7d037c7196de7933475c555379223ac2
@@ -333,15 +312,9 @@ id;language;translation;hash
 432;en;"Do not translate";e370b68e1630b87d617963bf6a09297c
 433;en;"Your account has been blocked.";9c5158df55b912bf17547ab71abe17df
 436;en;"Votes {votes_number}";ee478205b16a49d6262313a8bdd58a48
-438;en;"Create Comment";94e67d00e75f2b4b93cfe328104da6e0
-439;en;"Update Comment";29877b79303bd765d220397df0ec7a4b
-440;en;"View Comment";d01d9ae0dd475e8ae1430f54acc17e6d
 441;en;"Comment management";67fd9f41033acfc9c0d735fb5fb742bf
-442;en;"Export comments to CSV";54ea1887ce8c873771a6c11b468f97c9
 443;en;Comments;5e18186107cdc28e261b1abcaf86b12d
-444;en;"Table ‘comment’. User comments.";330a55b0df31d57670ffedf50cc98c35
 450;en;"The name of the role or permissions";cc1bad7fe76b41d4eb40a0d12fa1a212
-452;en;"Comment status";f51903b5be4153ae3f50ea87ea6c937c
 453;en;"Translate all";c5ec1dff985f5c36e5fe289bd0145684
 454;en;"Main Page";44f3f9d2dff2e8a35fccf96fdb975c54
 455;en;Product;44f3f9d2dff2e8a35fccf96fdb975c54
@@ -428,7 +401,6 @@ id;language;translation;hash
 576;en;"Type of view";949bab82e13566850a1c0505e46f727d
 577;en;View;ec752195c0e9bcb6508e8cb1f9a8031c
 578;en;"Only for the section ""Promotions / discounts.""";175ae85e1f667f4a6eb725231a478050
-579;en;Service.;df5559bbd33c8db6ec9ec89931697989
 581;en;Price.;947f5deebd601d060a883f600c52846d
 587;en;"Promotion / discount";1d8d24c5c13d46d7906b0f97d9a81c2d
 588;en;"Select a currency.";95f0443fc9be83d8adf5a69d044a185d
@@ -439,3 +411,47 @@ id;language;translation;hash
 593;en;"<h1>Promotions / discounts</h1>";a33f91d1f8021d9f163a165e2e148e91
 594;en;"Template for promotions and discounts";5ebe0b21f3bb23b7f18b3d4078ebf823
 595;en;"Discount end date";817982b85154ba734c94a02a4486e79a
+596;en;"Form of payment";58d5fb603be6f6d1914dae4143ce8041
+597;en;"To pay";22cf40d5e3a9c1468ed5cf0d80198c6b
+606;en;"Item in the cart";8d176414a106aa081eb74e45671b8535
+607;en;"User IP";f3df1442d093f09144970aa458ab7460
+608;en;Assortment;ad3366b4c03680aaa4e14341e0eb0df1
+609;en;"Quantity of assortment in the order form";b66c4ccc751f17fea57bdf360dacab77
+610;en;"Amount of assortment available";5bf27c43f75beebc87e9536a6a96aef5
+611;en;Measure;dd4160cd3e09ca66792861752be3fb5c
+612;en;"Not enough data.";812711bed736b8f90126f9fb292dad87
+613;en;"Assortment is required.";4e5d277ce59db54933365f9c4d2d8640
+614;en;"Quantity in stock is required.";0fed1dba352794bcc4f42e78afe038cf
+615;en;"Select a measure of measurement.";64959c873dc315cccad2c87c01e2a241
+616;en;"Assortment must be a positive number.";dccb4e1bd3852d142d993c4c75290cc5
+617;en;"Data error";6e0cc8822ebae9734e5d649d7fc16019
+618;en;"The quantity of assortment in stock should be a positive number.";6fa392cd677cdb0ff111fe36dd218e06
+619;en;"The quantity of assortment chosen by the buyer must be a positive number.";3881ecad6df7b7edbaf8392d285bf6d2
+620;en;"The quantity of assortment chosen by the buyer shall not exceed the quantity in stock.";48ed8d22a869b5d6a012bdb1ab7f920b
+621;en;"The quantity of assortment in stock should not be less than the buyer can choose.";999ed53043c550a0a5c1424951253cae
+623;en;"Link to document";0c674f8f5890077097ab0b0e134799ae
+624;en;thing;943755b94db076cd7258a3dfa39d19bc
+625;en;mm;c3ff1bdbc960f18f4c84fe9152ee7a78
+626;en;cm;8c2508609017c1fa6dda58e68655d91b
+627;en;m;7f840a43fd3e61f6f624d25fee3f4c85
+631;en;mg;cbf8a7ad219bf42b73a3723181b396a4
+632;en;g;864c7f09e43789b7c4b2f5ecfdf3b1cf
+633;en;kg;51519971f46cd279f997ab4cb1edaa4a
+634;en;ton;6c1494c85bf880026394c05d2b520eac
+635;en;ml;a5239adcc01bce4b8e0fbde5d3a970ff
+636;en;l;e7cbb4db3348a0ea07284454a8d66aa0
+638;en;"You already have the maximum quantity of this product in the basket.";956205885d6a08c31560ebe16613dd90
+639;en;"Indicate the quantity of the assortment sold.";1d39c5e0a5b011a783c21b101f972aa1
+640;en;"Measure of the measure of the assortment sold.";70fefc6edab13b275bb513a80a2c8616
+641;en;"Quantity of assortment in the order form. If the field is empty, equal to the total.";e2c923288f492902d28835883743fb7d
+642;en;"Specify the total quantity of assortment (in stock).";e2c923288f492902d28835883743fb7d
+644;en;"Shopping cart template";56982b2dd07a71d4a8333881043774d2
+649;en;Element;88b36db3bdad656a2c3dc7ded0d8b3eb
+654;en;"Template for articles";013b33bfa78a9d97427850bf52e13570
+655;en;"Product Template";67ff9f52709fa4160c1da4f0d9db98c1
+657;en;Service;ce3f400a59263910d289872d4de7ec53
+658;en;Rating;c0788864a7eb52fd0efa9d7e25eb46da
+659;en;Items;eeede5c18c33b95c0cc56b5a4725e4e5
+660;en;"Template for comments";380376a842302b300a5d2e2ed74001ac
+661;en;"Link to comment";03e8999cc9d644d5ca8ec4a11b510471
+662;en;"User profile template";ef54c28e4d4f50a9aa9c46f0961f734d

@@ -17,6 +17,8 @@ use yii\helpers\ArrayHelper;
 class FieldTextarea extends InputWidget
 {
     public $modelFieldForm;
+    public $data_id;
+
     public $options = [];
 
     public function init()
@@ -33,7 +35,7 @@ class FieldTextarea extends InputWidget
         $fieldID = $this->modelFieldForm->id;
 
         $options = [
-            'id' => 'field-' . $fieldID,
+            'id' => 'field-' . $this->data_id,
             'name' => $formName . "[elements_fields][$fieldID][0]",
             'value' => isset($this->model->elements_fields[$this->modelFieldForm->id][0]) ? $this->model->elements_fields[$this->modelFieldForm->id][0] : $fieldsManage->getValue($this->modelFieldForm->id, $this->modelFieldForm->type, $this->model->id),
         ];
@@ -46,7 +48,7 @@ class FieldTextarea extends InputWidget
         if (isset($this->model->errors_fields[$this->modelFieldForm->id][0])) {
             $error = $this->model->errors_fields[$this->modelFieldForm->id][0];
             $view = $this->getView();
-            $view->registerJs('addError("#group-' .  $this->modelFieldForm->id . '", "' . $error . '");');
+            $view->registerJs('addError("#group-' .  $this->data_id . '", "' . $error . '");');
         }
 
         echo Html::activeTextarea($this->model, $this->attribute, $this->options);

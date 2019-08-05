@@ -31,9 +31,9 @@ $items = [];
     <?php if ($item['alias'] == 'basket'): ?>
         <?php
         $items[] = [
-            'label' => Yii::t('app', $item['name']) . $this->render('_basket-product-count'),
-            'url' => Url::to(['/basket/default/index']),
-            'active' => Yii::$app->controller->module->id == $item['alias']
+            'label' => Yii::t('app', $item['name']) . '<span id="basket-product-count"> ' . $this->render('@frontend/views/templates/control/blocks/basket/_basket-product-count') . '</span>',
+            'url' => Url::to(['/control/default/index', 'alias_menu_item' => $item['alias']]),
+            'active' => Yii::$app->request->get('alias_menu_item') == $item['alias']
         ];
         ?>
     <?php elseif (Yii::$app->hasModule($item['alias'])): ?>
@@ -115,11 +115,7 @@ $items = [];
         ];
         ?>
     <?php endif; ?>
-<?php endforeach;
-/*if ($widget->langMenu) {
-    $items[] = $widget->langMenu;
-}*/
-?>
+<?php endforeach; ?>
 <?= Nav::widget([
     'options' => $widget->optoinsNav,
     'items' => $items,

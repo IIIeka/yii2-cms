@@ -18,6 +18,7 @@ use Yii;
  * @property int $status Статус
  * @property int $is_folder Папка?
  * @property int $parent_id Родитель
+ * @property int $item_id Элемент
  * @property int $template_id Шаблон
  * @property int $created_at Время создания
  * @property int $updated_at Время изменения
@@ -25,15 +26,16 @@ use Yii;
  * @property int $updated_by Изменил
  * @property int $position Позиция (перед)
  * @property int $access Доступ
+ * @property string $ip IP пользователя
+ * @property string $user_agent Данные браузера
  *
- * @property Basket[] $baskets
- * @property Comment[] $comments
- * @property Document $parent
+ * @property Document $item
  * @property Document[] $documents
+ * @property Document $parent
+ * @property Document[] $documents0
  * @property Template $template
  * @property User $createdBy
  * @property User $updatedBy
- * @property Like[] $likes
  * @property User[] $users
  * @property ValueFile[] $valueFiles
  * @property ValueInt[] $valueInts
@@ -42,7 +44,6 @@ use Yii;
  * @property ValuePrice[] $valuePrices0
  * @property ValueString[] $valueStrings
  * @property ValueText[] $valueTexts
- * @property Visit[] $visits
  */
 class Document extends \yii\db\ActiveRecord
 {
@@ -60,10 +61,12 @@ class Document extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'alias', 'created_by', 'updated_by'], 'required'],
+            [['name', 'alias'], 'required'],
             [['meta_keywords', 'meta_description', 'annotation', 'content'], 'string'],
-            [['status', 'is_folder', 'parent_id', 'template_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'position', 'access'], 'integer'],
-            [['name', 'alias', 'title'], 'string', 'max' => 255],
+            [['status', 'is_folder', 'parent_id', 'item_id', 'template_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'position', 'access'], 'integer'],
+            [['name', 'alias', 'title', 'user_agent'], 'string', 'max' => 255],
+            [['ip'], 'string', 'max' => 20],
+            [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Document::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Document::className(), 'targetAttribute' => ['parent_id' => 'id']],
             [['template_id'], 'exist', 'skipOnError' => true, 'targetClass' => Template::className(), 'targetAttribute' => ['template_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -88,6 +91,7 @@ class Document extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Статус'),
             'is_folder' => Yii::t('app', 'Папка?'),
             'parent_id' => Yii::t('app', 'Родитель'),
+            'item_id' => Yii::t('app', 'Элемент'),
             'template_id' => Yii::t('app', 'Шаблон'),
             'created_at' => Yii::t('app', 'Время создания'),
             'updated_at' => Yii::t('app', 'Время изменения'),
@@ -95,23 +99,25 @@ class Document extends \yii\db\ActiveRecord
             'updated_by' => Yii::t('app', 'Изменил'),
             'position' => Yii::t('app', 'Позиция (перед)'),
             'access' => Yii::t('app', 'Доступ'),
+            'ip' => Yii::t('app', 'IP пользователя'),
+            'user_agent' => Yii::t('app', 'Данные браузера'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBaskets()
+    public function getItem()
     {
-        return $this->hasMany(Basket::className(), ['document_id' => 'id']);
+        return $this->hasOne(Document::className(), ['id' => 'item_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getComments()
+    public function getDocuments()
     {
-        return $this->hasMany(Comment::className(), ['document_id' => 'id']);
+        return $this->hasMany(Document::className(), ['item_id' => 'id']);
     }
 
     /**
@@ -125,7 +131,7 @@ class Document extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDocuments()
+    public function getDocuments0()
     {
         return $this->hasMany(Document::className(), ['parent_id' => 'id']);
     }
@@ -152,14 +158,6 @@ class Document extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLikes()
-    {
-        return $this->hasMany(Like::className(), ['document_id' => 'id']);
     }
 
     /**
@@ -224,13 +222,5 @@ class Document extends \yii\db\ActiveRecord
     public function getValueTexts()
     {
         return $this->hasMany(ValueText::className(), ['document_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVisits()
-    {
-        return $this->hasMany(Visit::className(), ['document_id' => 'id']);
     }
 }
